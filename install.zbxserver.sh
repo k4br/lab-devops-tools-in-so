@@ -29,11 +29,10 @@ else
 		sudo yum -y install nano		
 		sudo rpm -Uvh https://repo.zabbix.com/zabbix/4.2/rhel/7/x86_64/zabbix-release-4.2-1.el7.noarch.rpm
 		sudo yum -y install zabbix-server-mysql zabbix-web-mysql zabbix-agent zabbix-get zabbix-sender
-		mysql -uroot --password=abc -e "create database zabbix character set utf8 collate utf8_bin;grant all privileges on zabbix.* to zabbix@localhost identified by 'zabbix_pw';"		
-		sudo zcat /usr/share/doc/zabbix-server-mysql-4.2.*/create.sql.gz | mysql -uzabbix -p zabbix --password=zabbix_pw
-		mysql -uzabbix -p zabbix --password=zabbix_pw -e "show tables"		
+		sudo yum -y install mysql
+		sudo zcat /usr/share/doc/zabbix-server-mysql-4.2.*/create.sql.gz | mysql -uzabbix -p zabbix -h 192.168.10.100 --password=zabbix_pw
 		sudo cp /etc/zabbix/zabbix_server.conf /etc/zabbix/zabbix_server.conf.bkp
-		sudo sed 's/# DBPassword=/DBPassword=zabbix_pw/g' /etc/zabbix/zabbix_server.conf.bkp > zabbix_server.conf
+		sudo sed 's/# DBPassword=/DBPassword=zabbix_pw/g' /etc/zabbix/zabbix_server.conf.bkp | sudo sed 's/# DBHost=localhost/DBHost=192.168.10.100/g' > zabbix_server.conf
 		sudo cp zabbix_server.conf /etc/zabbix/zabbix_server.conf
 		sudo cp /etc/httpd/conf.d/zabbix.conf /etc/httpd/conf.d/zabbix.conf.bkp
 		sudo sed 's/<IfModule mod_php5.c>/<IfModule mod_php7.c>/g' /etc/httpd/conf.d/zabbix.conf.bkp > zabbix.conf
