@@ -23,7 +23,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "zbxserver01" do |zbxserver01|
 	zbxserver01.vm.provision :shell, path: "init.sh"
 	zbxserver01.trigger.after [:up, :reload] do |trigger|
-		trigger.run_remote = {inline: "bash /vagrant/install.zbxserver.sh"}
+		#trigger.run_remote = {inline: "bash /vagrant/install.zbxserver.sh"}
 	end	
     zbxserver01.vm.hostname = "zbxserver01"
     zbxserver01.vm.box = "centos/7"
