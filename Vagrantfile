@@ -8,7 +8,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "zbxmariadb01" do |zbxmariadb01|
 	zbxmariadb01.vm.provision :shell, path: "init.sh"
 	zbxmariadb01.trigger.after [:up, :reload] do |trigger|
-		trigger.run_remote = {inline: "bash /vagrant/install.zabbix.mariadb.sh"}
+		trigger.run_remote = {inline: "bash /vagrant/install.zabbix.mariadb.sh | tee -a install.log"}
 	end	
     zbxmariadb01.vm.hostname = "zbxmariadb01"
     zbxmariadb01.vm.box = "centos/7"
