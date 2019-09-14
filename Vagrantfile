@@ -24,7 +24,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	zbxserver01.vm.provision :shell, path: "init.sh"
 	zbxserver01.trigger.after [:up, :reload] do |trigger|
 		trigger.run_remote = {inline: "bash /vagrant/install.zabbix.server.sh"}
-	end	
+	end
     zbxserver01.vm.hostname = "zbxserver01"
     zbxserver01.vm.box = "centos/7"
 	zbxserver01.vm.network "private_network", ip: "192.168.10.101"
@@ -39,7 +39,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	jenksmaster01.vm.provision :shell, path: "init.sh"
 	jenksmaster01.trigger.after [:up, :reload] do |trigger|
 		trigger.run_remote = {inline: "bash /vagrant/install.jenks.master.sh"}
-	end	
+	end
     jenksmaster01.vm.hostname = "jenksmaster01"
     jenksmaster01.vm.box = "centos/7"
 	jenksmaster01.vm.network "private_network", ip: "192.168.10.102"
@@ -54,7 +54,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	jenksslave01.vm.provision :shell, path: "init.sh"
 	jenksslave01.trigger.after [:up, :reload] do |trigger|
 		trigger.run_remote = {inline: "bash /vagrant/install.jenks.slave.sh"}
-	end	
+	end
     jenksslave01.vm.hostname = "jenksslave01"
     jenksslave01.vm.box = "centos/7"
 	jenksslave01.vm.network "private_network", ip: "192.168.10.103"
