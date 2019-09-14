@@ -43,7 +43,7 @@ else
 		sudo systemctl start zabbix-agent
 		sudo systemctl enable zabbix-agent
 		sudo cp /etc/zabbix/zabbix_agentd.conf /etc/zabbix/zabbix_agentd.conf.bkp
-		sudo sed 's/Server=127.0.0.1/Server=192.168.60.101/g' /etc/zabbix/zabbix_agentd.conf.bkp | sudo sed 's/ServerActive=127.0.0.1/ServerActive=192.168.60.101/g' | sudo sed "s/Hostname=Zabbix server/Hostname=$(hostname)/g" > zabbix_agentd.conf
+		sudo sed 's/Server=127.0.0.1/Server=192.168.10.101/g' /etc/zabbix/zabbix_agentd.conf.bkp | sudo sed 's/ServerActive=127.0.0.1/ServerActive=192.168.10.101/g' | sudo sed "s/Hostname=Zabbix server/Hostname=$(hostname)/g" > zabbix_agentd.conf
 		sudo cp zabbix_agentd.conf /etc/zabbix/zabbix_agentd.conf
 		sudo systemctl restart zabbix-agent
 		
