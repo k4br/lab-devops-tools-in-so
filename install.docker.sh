@@ -1,10 +1,10 @@
 #!/bin/bash
 source /vagrant/functions.sh
-logging "Inicio - install arquivo .sh primcipal"
 #Arquivo de controle de instalacao
 ARQUIVO_CONTROLE='/home/vagrant/controle/install.controle'
 ARQUIVO_CONTROLE_PRIMEIRA_EXECUCAO='/home/vagrant/controle/01.controle'
 ARQUIVO_CONTROLE_SEGUNDA_EXECUCAO='/home/vagrant/controle/02.controle'
+logging "Inicio - install arquivo .sh primcipal"
 if [ -f $ARQUIVO_CONTROLE ]; then
 	logging "Inatalação já executada"
 else
@@ -18,19 +18,15 @@ else
 		logging "Inicio -  Chamando script default de instalação [/vagrant/install.default.sh]"
 		bash /vagrant/install.default.sh
 		logging "Fim -  Chamando script default de instalação [/vagrant/install.default.sh]"
-		logging "Inicio - Instalação mariadb"	
-		#https://siteesite.com.br/kb/instale-o-mariadb-no-centos-7/
-		sudo yum install -y  mariadb-server-1:5.5.60-1.el7_5.x86_64
-		sudo systemctl start mariadb.service
-		sudo systemctl enable mariadb.service
-		logging "Configurando mariadb com comando mysql_secure_installation"
-		printf "\n y\n abc\n abc\n y\n y\n y\n y\n" | sudo mysql_secure_installation
-		logging "Inicio - Criando usuário e esquemas do zabbix no BD"
-		mysql -uroot --password=abc -e "create database zabbix character set utf8 collate utf8_bin;grant all privileges on zabbix.* to zabbix@localhost identified by 'zabbix_pw';"
-		#Permite acesso de qualquer IP para o usuario:zabbix_pw
-		mysql -uroot --password=abc -e "grant all privileges on zabbix.* to 'zabbix'@'%' identified by 'zabbix_pw';"
-		logging "Fim - Criando usuário e esquemas do zabbix no BD"
-		logging "Fim - Instalação mariadb"
+		logging "Inicio -  Instalação do docker e docker-compose	"
+		sudo yum install -y device-mapper-persistent-data lvm2
+		sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+		sudo yum install docker-ce docker-ce-cli containerd.io
+		sudo systemctl start docker
+		sudo systemctl enable docker
+		curl -L "https://github.com/docker/compose/releases/download/1.23.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+		sudo chmod +x /usr/local/bin/docker-compose		
+		logging "Inicio -  Instalação do docker e docker-compose"
 		sudo mv $ARQUIVO_CONTROLE.inicio $ARQUIVO_CONTROLE
 		logging "Fim - Inatalação."
 	fi

@@ -23,7 +23,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "zbxserver01" do |zbxserver01|
 	zbxserver01.vm.provision :shell, path: "init.sh"
 	zbxserver01.trigger.after [:up, :reload] do |trigger|
-		trigger.run_remote = {inline: "bash /vagrant/install.zabbix.server.sh"}
+		trigger.run_remote = {inline: "bash /vagrant/install.zabbix.server.sh | tee -a install.log"}
 	end
     zbxserver01.vm.hostname = "zbxserver01"
     zbxserver01.vm.box = "centos/7"
@@ -38,7 +38,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "jenksmaster01" do |jenksmaster01|
 	jenksmaster01.vm.provision :shell, path: "init.sh"
 	jenksmaster01.trigger.after [:up, :reload] do |trigger|
-		trigger.run_remote = {inline: "bash /vagrant/install.jenks.master.sh"}
+		trigger.run_remote = {inline: "bash /vagrant/install.jenks.master.sh | tee -a install.log"}
 	end
     jenksmaster01.vm.hostname = "jenksmaster01"
     jenksmaster01.vm.box = "centos/7"
@@ -53,7 +53,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "jenksslave01" do |jenksslave01|
 	jenksslave01.vm.provision :shell, path: "init.sh"
 	jenksslave01.trigger.after [:up, :reload] do |trigger|
-		trigger.run_remote = {inline: "bash /vagrant/install.jenks.slave.sh"}
+		trigger.run_remote = {inline: "bash /vagrant/install.jenks.slave.sh | tee -a install.log"}
 	end
     jenksslave01.vm.hostname = "jenksslave01"
     jenksslave01.vm.box = "centos/7"
@@ -64,6 +64,21 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
   #jenksslave01
+  #docker01 Servidor generico de Zabbix
+  config.vm.define "docker01" do |docker01|
+	docker01.vm.provision :shell, path: "init.sh"
+	docker01.trigger.after [:up, :reload] do |trigger|
+		trigger.run_remote = {inline: "bash /vagrant/install.docker.sh | tee -a install.log"}
+	end
+    docker01.vm.hostname = "docker01"
+    docker01.vm.box = "centos/7"
+	docker01.vm.network "private_network", ip: "192.168.10.104"
+    docker01.vm.provider "virtualbox" do |v|
+        v.customize [ "modifyvm", :id, "--cpus", "1" ]
+        v.customize [ "modifyvm", :id, "--memory", "1024" ]
+    end
+  end
+  #docker01
 
 
 end
