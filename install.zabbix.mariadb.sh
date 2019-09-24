@@ -20,7 +20,7 @@ else
 		logging "Fim -  Chamando script default de instalação [/vagrant/install.default.sh]"
 		logging "Inicio - Instalação mariadb"	
 		#https://siteesite.com.br/kb/instale-o-mariadb-no-centos-7/
-		sudo yum install -y  mariadb-server-1:5.5.60-1.el7_5.x86_64
+		sudo yum install -y  mariadb-server
 		sudo systemctl start mariadb.service
 		sudo systemctl enable mariadb.service
 		logging "Configurando mariadb com comando mysql_secure_installation"

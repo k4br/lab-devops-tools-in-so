@@ -18,15 +18,17 @@ else
 		logging "Inicio -  Chamando script default de instalação [/vagrant/install.default.sh]"
 		bash /vagrant/install.default.sh
 		logging "Fim -  Chamando script default de instalação [/vagrant/install.default.sh]"
-		logging "Inicio -  Instalação do docker e docker-compose"
-		sudo yum install -y device-mapper-persistent-data lvm2
-		sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-		sudo yum install -y docker-ce docker-ce-cli containerd.io
-		sudo systemctl start docker
-		sudo systemctl enable docker
-		curl -L "https://github.com/docker/compose/releases/download/1.23.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-		sudo chmod +x /usr/local/bin/docker-compose		
-		logging "Inicio -  Instalação do docker e docker-compose"
+		logging "Inicio -  Instalação do gitlab server"
+		#https://about.gitlab.com/install/#centos-7		
+		sudo yum install -y curl policycoreutils-python openssh-server
+		sudo systemctl enable sshd
+		sudo systemctl start sshd
+		sudo yum install -y postfix
+		sudo systemctl enable postfix
+		sudo systemctl start postfix
+		curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.rpm.sh | sudo bash
+		sudo EXTERNAL_URL="https://gitlab.lab-devops-tools-in-so" yum install -y gitlab-ee		
+		logging "Inicio -  Instalação do gitlab server"
 		sudo mv $ARQUIVO_CONTROLE.inicio $ARQUIVO_CONTROLE
 		logging "Fim - Inatalação."
 	fi
