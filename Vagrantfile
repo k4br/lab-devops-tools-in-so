@@ -6,6 +6,7 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #zbxmariadb01 Servidor generico de Zabbix
   config.vm.define "zbxmariadb01" do |zbxmariadb01|
+	#zbxmariadb01.vm.boot_timeout = 120
 	zbxmariadb01.vm.provision :shell, path: "init.sh"
 	zbxmariadb01.trigger.after [:up, :reload] do |trigger|
 		trigger.run_remote = {inline: "bash /vagrant/install.zabbix.mariadb.sh | tee -a install.log"}
@@ -14,8 +15,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     zbxmariadb01.vm.box = "centos/7"
 	zbxmariadb01.vm.network "private_network", ip: "192.168.10.100"
     zbxmariadb01.vm.provider "virtualbox" do |v|
-        v.customize [ "modifyvm", :id, "--cpus", "1" ]
-        v.customize [ "modifyvm", :id, "--memory", "512" ]
+		v.gui = true
+        v.customize [ "modifyvm", :id, "--cpus", "8" ]
+        v.customize [ "modifyvm", :id, "--memory", "5120" ]
     end
   end
   #zbxmariadb01
