@@ -36,36 +36,36 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
   #zbxserver01
-  #jenksmaster01 Servidor generico de Zabbix
-  config.vm.define "jenksmaster01" do |jenksmaster01|
-	jenksmaster01.vm.provision :shell, path: "init.sh"
-	jenksmaster01.trigger.after [:up, :reload] do |trigger|
-		trigger.run_remote = {inline: "bash /vagrant/install.jenks.master.sh | tee -a install.externo.log"}
+  #jenkinsmaster01 Servidor generico de Zabbix
+  config.vm.define "jenkinsmaster01" do |jenkinsmaster01|
+	jenkinsmaster01.vm.provision :shell, path: "init.sh"
+	jenkinsmaster01.trigger.after [:up, :reload] do |trigger|
+		trigger.run_remote = {inline: "bash /vagrant/install.jenkins.master.sh | tee -a install.externo.log"}
 	end
-    jenksmaster01.vm.hostname = "jenksmaster01"
-    jenksmaster01.vm.box = "centos/7"
-	jenksmaster01.vm.network "private_network", ip: "192.168.10.102"
-    jenksmaster01.vm.provider "virtualbox" do |v|
+    jenkinsmaster01.vm.hostname = "jenkinsmaster01"
+    jenkinsmaster01.vm.box = "centos/7"
+	jenkinsmaster01.vm.network "private_network", ip: "192.168.10.102"
+    jenkinsmaster01.vm.provider "virtualbox" do |v|
         v.customize [ "modifyvm", :id, "--cpus", "2" ]
         v.customize [ "modifyvm", :id, "--memory", "2048" ]
     end
   end
-  #jenksmaster01
-  #jenksslave01 Servidor generico de Zabbix
-  config.vm.define "jenksslave01" do |jenksslave01|
-	jenksslave01.vm.provision :shell, path: "init.sh"
-	jenksslave01.trigger.after [:up, :reload] do |trigger|
-		trigger.run_remote = {inline: "bash /vagrant/install.jenks.slave.sh | tee -a install.log"}
+  #jenkinsmaster01
+  #jenkinsslave01 Servidor generico de Zabbix
+  config.vm.define "jenkinsslave01" do |jenkinsslave01|
+	jenkinsslave01.vm.provision :shell, path: "init.sh"
+	jenkinsslave01.trigger.after [:up, :reload] do |trigger|
+		trigger.run_remote = {inline: "bash /vagrant/install.jenkins.slave.sh | tee -a install.log"}
 	end
-    jenksslave01.vm.hostname = "jenksslave01"
-    jenksslave01.vm.box = "centos/7"
-	jenksslave01.vm.network "private_network", ip: "192.168.10.103"
-    jenksslave01.vm.provider "virtualbox" do |v|
+    jenkinsslave01.vm.hostname = "jenkinsslave01"
+    jenkinsslave01.vm.box = "centos/7"
+	jenkinsslave01.vm.network "private_network", ip: "192.168.10.103"
+    jenkinsslave01.vm.provider "virtualbox" do |v|
         v.customize [ "modifyvm", :id, "--cpus", "1" ]
         v.customize [ "modifyvm", :id, "--memory", "1024" ]
     end
   end
-  #jenksslave01
+  #jenkinsslave01
   #docker01 Servidor generico de Zabbix
   config.vm.define "docker01" do |docker01|
 	docker01.vm.provision :shell, path: "init.sh"
