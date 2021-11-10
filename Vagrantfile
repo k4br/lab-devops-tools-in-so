@@ -40,7 +40,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "jenksmaster01" do |jenksmaster01|
 	jenksmaster01.vm.provision :shell, path: "init.sh"
 	jenksmaster01.trigger.after [:up, :reload] do |trigger|
-		trigger.run_remote = {inline: "bash /vagrant/install.jenks.master.sh | tee -a install.log"}
+		trigger.run_remote = {inline: "bash /vagrant/install.jenks.master.sh | tee -a install.externo.log"}
 	end
     jenksmaster01.vm.hostname = "jenksmaster01"
     jenksmaster01.vm.box = "centos/7"

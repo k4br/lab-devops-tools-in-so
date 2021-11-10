@@ -4,32 +4,37 @@ source /vagrant/functions.sh
 ARQUIVO_CONTROLE='/home/vagrant/controle/install.controle'
 ARQUIVO_CONTROLE_PRIMEIRA_EXECUCAO='/home/vagrant/controle/01.controle'
 ARQUIVO_CONTROLE_SEGUNDA_EXECUCAO='/home/vagrant/controle/02.controle'
-logging "Inicio - install arquivo .sh primcipal"
+SH_NAME="$(basename $BASH_SOURCE)"
+logging "$SH_NAME - Inicio - install arquivo .sh primcipal"
 if [ -f $ARQUIVO_CONTROLE ]; then
-	logging "Inatalação já executada"
+	logging "$SH_NAME - Inatalação já executada"
 else
 	if [ -f $ARQUIVO_CONTROLE_PRIMEIRA_EXECUCAO ]; then
-		logging "Primeira execução noa executar instalação."
+		logging "$SH_NAME - Primeira execução noa executar instalação."
 		sudo mv $ARQUIVO_CONTROLE_PRIMEIRA_EXECUCAO $ARQUIVO_CONTROLE_SEGUNDA_EXECUCAO
 	else
-		logging "Inicio - Inatalação"
-		logging "Criando arquivo de controle"
+		logging "$SH_NAME - Inicio - Inatalação"
+		logging "$SH_NAME - Criando arquivo de controle"
 		sudo touch $ARQUIVO_CONTROLE.inicio
-		logging "Inicio -  Chamando script default de instalação [/vagrant/install.default.sh]"
+		logging "$SH_NAME - Inicio -  Chamando script default de instalação [/vagrant/install.default.sh]"
 		bash /vagrant/install.default.sh
-		logging "Fim -  Chamando script default de instalação [/vagrant/install.default.sh]"
-		#https://wiki.jenkins.io/display/JENKINS/Installing+Jenkins+on+Red+Hat+distributions
-		logging "Inicio -  Instalação do Jenkins"
-		sudo yum install git -y
-		sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
-		sudo rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key
-		sudo yum install -y jenkins
-		sudo yum install -y java
-		sudo service jenkins start
-		sudo chkconfig jenkins on
-		logging "Inicio -  Instalação do Jenkins"
+		logging "$SH_NAME - Fim -  Chamando script default de instalação [/vagrant/install.default.sh]"
+		#https://www.jenkins.io/doc/book/installing/linux/#red-hat-centos
+		logging "$SH_NAME - Inicio -  Instalação do Jenkins"
+		sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+		sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+		sudo yum upgrade
+		sudo yum install epel-release java-11-openjdk-devel
+		sudo yum install jenkins
+		sudo systemctl daemon-reload
+Y		#You can start the Jenkins service with the command:
+		sudo systemctl enable jenkins
+		sudo systemctl start jenkins
+		#You can check the status of the Jenkins service using the command:
+s		sudo systemctl status jenkins
+		logging "$SH_NAME - Inicio -  Instalação do Jenkins"
 		sudo mv $ARQUIVO_CONTROLE.inicio $ARQUIVO_CONTROLE
-		logging "Fim - Inatalação."
+		logging "$SH_NAME - Fim - Inatalação."
 	fi
 fi
-logging "Fim - install arquivo .sh primcipal"
+logging "$SH_NAME - Fim - install arquivo .sh primcipal"

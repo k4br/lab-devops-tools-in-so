@@ -31,6 +31,9 @@ else
 		mysql -uroot --password=abc -e "grant all privileges on zabbix.* to 'zabbix'@'%' identified by 'zabbix_pw';"
 		logging "Fim - Criando usuário e esquemas do zabbix no BD"
 		logging "Fim - Instalação mariadb"
+		showmount -e 192.168.104.231
+		mkdir /tmp/nfsfileshare
+		mount 192.168.104.231:/nfsfileshare /tmp/nfsfileshare
 		sudo mv $ARQUIVO_CONTROLE.inicio $ARQUIVO_CONTROLE
 		logging "Fim - Inatalação."
 	fi
