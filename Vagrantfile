@@ -4,7 +4,7 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  #jenkinsmaster01 Servidor generico de Zabbix
+#jenkinsmaster01
   config.vm.define "jenkinsmaster01" do |jenkinsmaster01|
 	jenkinsmaster01.vm.provision :shell, path: "init.sh"
 	jenkinsmaster01.trigger.after [:up, :reload] do |trigger|
