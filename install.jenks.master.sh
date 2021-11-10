@@ -27,14 +27,15 @@ else
 		sudo yum install epel-release java-11-openjdk-devel
 		sudo yum install jenkins
 		sudo systemctl daemon-reload
-Y		#You can start the Jenkins service with the command:
+		#You can start the Jenkins service with the command:
 		sudo systemctl enable jenkins
 		sudo systemctl start jenkins
 		#You can check the status of the Jenkins service using the command:
-s		sudo systemctl status jenkins
-		logging "$SH_NAME - Inicio -  Instalação do Jenkins"
+		sudo systemctl status jenkins
+		logging "$SH_NAME - Fim -  Instalação do Jenkins"
 		sudo mv $ARQUIVO_CONTROLE.inicio $ARQUIVO_CONTROLE
 		logging "$SH_NAME - Fim - Inatalação."
 	fi
 fi
 logging "$SH_NAME - Fim - install arquivo .sh primcipal"
+
