@@ -23,9 +23,11 @@ else
 		logging "$SH_NAME - Inicio -  Instalação do Jenkins"
 		sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
 		sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
-		sudo yum upgrade
-		sudo yum install epel-release java-11-openjdk-devel
-		sudo yum install jenkins
+		sudo yum upgrade -y
+		sudo yum install -y epel-release
+		sudo yum install -y java-11-openjdk-devel
+		sudo yum update -y
+		sudo yum install -y jenkins
 		sudo systemctl daemon-reload
 		#You can start the Jenkins service with the command:
 		sudo systemctl enable jenkins
