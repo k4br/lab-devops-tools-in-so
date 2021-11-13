@@ -4,38 +4,39 @@ source /vagrant/functions.sh
 ARQUIVO_CONTROLE='/home/vagrant/controle/install.controle'
 ARQUIVO_CONTROLE_PRIMEIRA_EXECUCAO='/home/vagrant/controle/01.controle'
 ARQUIVO_CONTROLE_SEGUNDA_EXECUCAO='/home/vagrant/controle/02.controle'
-logging "Inicio - install arquivo .sh primcipal"
+SH_NAME="$(basename $BASH_SOURCE)"
+logging "$SH_NAME - Inicio - install arquivo .sh primcipal"
 if [ -f $ARQUIVO_CONTROLE ]; then
-	logging "Inatalação já executada"
+	logging "$SH_NAME - Inatalação já executada"
 else
 	if [ -f $ARQUIVO_CONTROLE_PRIMEIRA_EXECUCAO ]; then
-		logging "Primeira execução noa executar instalação."
+		logging "$SH_NAME - Primeira execução noa executar instalação."
 		sudo mv $ARQUIVO_CONTROLE_PRIMEIRA_EXECUCAO $ARQUIVO_CONTROLE_SEGUNDA_EXECUCAO
 	else
-		logging "Inicio - Inatalação"
-		logging "Criando arquivo de controle"
+		logging "$SH_NAME - Inicio - Inatalação"
+		logging "$SH_NAME - Criando arquivo de controle"
 		sudo touch $ARQUIVO_CONTROLE.inicio
-		logging "Inicio -  Chamando script default de instalação [/vagrant/install.default.sh]"
+		logging "$SH_NAME - Inicio -  Chamando script default de instalação [/vagrant/install.default.sh]"
 		bash /vagrant/install.default.sh
-		logging "Fim -  Chamando script default de instalação [/vagrant/install.default.sh]"
-		logging "Inicio -  Instalação do Jenkins Slave"
-		logging "Inicio -  Instalação git java"
-		sudo yum install git java -y
-		logging "Fim -  Instalação git java"
-		logging "Inicio -  criacao usuario jenkins e chave RSA"				
+		logging "$SH_NAME - Fim -  Chamando script default de instalação [/vagrant/install.default.sh]"
+		logging "$SH_NAME - Inicio -  Instalação do Jenkins Slave"
+		logging "$SH_NAME - Inicio -  Instalação git java"
+		sudo yum install -y java-11-openjdk-devel
+		logging "$SH_NAME - Fim -  Instalação git java"
+		logging "$SH_NAME - Inicio -  criacao usuario jenkins e chave RSA"				
 		sudo adduser -d /var/lib/jenkins jenkins
 		sudo mkdir /var/lib/jenkins/.ssh
 		sudo ssh-keygen -N "" -f /var/lib/jenkins/.ssh/id_rsa
 		sudo cp /var/lib/jenkins/.ssh/id_rsa.pub /var/lib/jenkins/.ssh/authorized_keys
-		sudo chown -R jenkins:jenkins /var/lib/jenkins/.ssh/
-		logging "Inicio>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Chave RSA"
+		sudo chown -R jenkins:jenkins /var/lib/jenkins
+		logging "$SH_NAME - Inicio>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Chave RSA"
 		sudo  cat /var/lib/jenkins/.ssh/id_rsa		
-		logging "Fin<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Chave RSA"
-		logging "Fim -  criacao usuario jenkins e chave RSA"					
-		logging "Inicio -  Instalação do Jenkins Slave"
+		logging "$SH_NAME - Fin<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Chave RSA"
+		logging "$SH_NAME - Fim -  criacao usuario jenkins e chave RSA"					
+		logging "$SH_NAME - Inicio -  Instalação do Jenkins Slave"
 		sudo mv $ARQUIVO_CONTROLE.inicio $ARQUIVO_CONTROLE
-		logging "Fim - Inatalação."
+		logging "$SH_NAME - Fim - Inatalação."
 	fi
 fi
-logging "Fim - install arquivo .sh primcipal"
+logging "$SH_NAME - Fim - install arquivo .sh primcipal"
 
