@@ -40,4 +40,7 @@ logging "$SH_NAME - Fim - Instalação yum-utils"
 logging "$SH_NAME - Inicio - Instalação git"	
 sudo yum install git -y
 logging "$SH_NAME - Fim - Instalação git"
+logging "$SH_NAME - Inicio - Instalação JSON processor"
+sudo yum install jq -y
+logging "$SH_NAME - Fim - Instalação JSON processor"
 logging "$SH_NAME - Fim - install.default"
